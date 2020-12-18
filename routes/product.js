@@ -35,20 +35,18 @@ router.route('/:id').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-/*
 router.route('/update/:id').post((req, res) => {
-  Exercise.findById(req.params.id)
+  Product.findById(req.params.id)
     .then(product => {
-      exercise.username = req.body.username;
-      exercise.description = req.body.description;
-      exercise.duration = Number(req.body.duration);
-      exercise.date = Date.parse(req.body.date);
+      product.name = req.body.name;
+      proudct.description = req.body.description;
+      product.price = Number(req.body.price);
 
-      exercise.save()
-        .then(() => res.json('Exercise updated!'))
+      product.save()
+        .then(() => res.json('Product updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
-});*/
+});
 
 module.exports = router;
