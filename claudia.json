@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "hyfix-backend-executor",
+    "name": "hyfix-backend",
+    "region": "us-east-2"
+  },
+  "api": {
+    "id": "zsvumedjri"
+  }
+}

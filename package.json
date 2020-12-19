@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "init-claudia": "claudia generate-serverless-express-proxy --express-module server",
+    "create-api": "claudia create --handler lambda.handler --deploy-proxy-api --region us-east-2",
+    "update-api": "claudia --update"
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,17 @@
   },
   "homepage": "https://github.com/MicaHorton/hyfix.ai#readme",
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.11.8"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "claudia": "^5.12.0"
   }
 }
