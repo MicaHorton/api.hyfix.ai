@@ -2,9 +2,9 @@
   "lambda": {
     "role": "hyfix-backend-executor",
     "name": "hyfix-backend",
-    "region": "us-east-2"
+    "region": "us-west-1"
   },
   "api": {
-    "id": "s0zbbmelp0"
+    "id": "1uzsz611cb"
   }
 }
