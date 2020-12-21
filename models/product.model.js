@@ -21,7 +21,7 @@ const productSchema = new Schema({
         required: true,
         trim: true
     },
-    img: {
+    category: {
         type: String,
         required: false
     }
@@ -36,5 +36,10 @@ module.exports = Product;
 img: {
     data: buffer,
     contentType: string
+}
+
+img: {
+    type: String,
+    required: false
 }
 */
