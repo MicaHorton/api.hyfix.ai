@@ -24,6 +24,10 @@ const productSchema = new Schema({
     category: {
         type: String,
         required: false
+    },
+    img: {
+        type: String,
+        required: false
     }
 }, {
     timestamps: true,
