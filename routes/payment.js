@@ -1,4 +1,7 @@
-const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+
+require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+
 
 app.post('/create-checkout-session', async (req, res) => {
     const session = await stripe.checkout.sessions.create({

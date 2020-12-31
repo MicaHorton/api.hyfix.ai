@@ -27,6 +27,9 @@ app.use('/products', productRouter);
 const userRouter = require('./routes/user');
 app.use(userRouter);
 
+const payementRouter = require('./routes/payement');
+app.use(payementRouter);
+
 // Listen & Export
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
