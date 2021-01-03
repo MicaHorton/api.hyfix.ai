@@ -4,21 +4,12 @@ const router = require('express').Router();
 const fs = require('fs');
 const uploadImage = require('../middleware/uploadImage.js');*/
 
-
 // Normal Routes
-
-router.route('/').get((req, res) => {
+router.route('/all').get((req, res) => {
   Product.find()
     .then(products => res.json(products))
     .catch(err => res.status(400).json('Error: ' + err));
 });
-
-router.route('/single/:id').get((req, res) => {
-  Product.findById(req.params.id)
-    .then(product => res.json(product))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
 
 router.route('/category/:category').get((req, res) => {
   //res.send(req.params.category);
@@ -27,8 +18,32 @@ router.route('/category/:category').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err)); 
 });
 
-// Protected Routes (well, they should be)
+router.route('/single/:id').get((req, res) => {
+  console.log('singleb');
+  Product.findById(req.params.id)
+    .then(product => res.json(product))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
+router.route('/cart').get(async (req, res) => {
+  const productList =  req.query.products;
+  let productID;
+  
+  let pendingProducts = productList.map(productID => {
+    return Product.findById(productID)
+      .then(product => {
+        return product;
+      })
+      .catch(err => console.log(err));
+  })
+
+  Promise.all(pendingProducts).then(fetchedProducts => {
+    res.json(fetchedProducts);
+  })
+  
+});
+
+// Protected Routes (well, they should be)
 router.route('/add').post((req, res) => {
   console.log(req.body);
   console.log(req.file);
@@ -59,11 +74,13 @@ router.route('/add').post((req, res) => {
   .catch(err => res.status(400).json('Error: ' + err));
 
 });
+
 router.route('/:id').get((req, res) => {
   Product.findById(req.params.id)
     .then(product => res.json(product))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
 router.route('/:id').delete((req, res) => {
   Product.findByIdAndDelete(req.params.id)
     .then(() => res.json('Product deleted.'))

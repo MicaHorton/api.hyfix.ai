@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Open Connection
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true }
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
 );
 
 const connection = mongoose.connection;
@@ -21,14 +21,14 @@ connection.once('open', () => {
 })
 
 // Define Routers
-const productRouter = require('./routes/product');
+const productRouter = require('./routes/products');
 app.use('/products', productRouter);
 
-const userRouter = require('./routes/user');
-app.use(userRouter);
+const userRouter = require('./routes/users');
+app.use('/users', userRouter);
 
-const payementRouter = require('./routes/payement');
-app.use(payementRouter);
+const paymentRouter = require('./routes/payment');
+app.use('/payment', paymentRouter);
 
 // Listen & Export
 app.listen(port, () => {
