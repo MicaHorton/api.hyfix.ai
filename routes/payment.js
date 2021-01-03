@@ -15,7 +15,7 @@ router.route('/create-payment-intent').post(async (req, res) => {
   for (product of products) {
     amount += product.price;
   }
-  amount = Math.round(amount);
+  amount = Math.round(amount * 100);
 
   const options = {
     amount: amount,
