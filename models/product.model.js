@@ -9,10 +9,15 @@ const productSchema = new Schema({
         trim: true,
         minlength: 5
     },
+    synopsis: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 5
+    },
     description: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         minlength: 5
     },
