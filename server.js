@@ -21,6 +21,10 @@ connection.once('open', () => {
 })
 
 // Define Routers
+app.route('/').get(async (req, res) => {
+    res.json('Hello from API!')
+})
+
 const productRouter = require('./routes/products');
 app.use('/products', productRouter);
 

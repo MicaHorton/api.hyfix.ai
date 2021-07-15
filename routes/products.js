@@ -1,44 +1,48 @@
-let Product = require('../models/product.model');
-const router = require('express').Router();
-const mongoose = require('mongoose');
-var db = mongoose.connection;
-let checkAdmin = require('../middleware/checkAdmin');
-require('dotenv').config();
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
+let Product = require('../models/product.model')
+const router = require('express').Router()
 
+const mongoose = require('mongoose')
+var db = mongoose.connection
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
+
+// let checkAdmin = require('../middleware/checkAdmin');
+// require('dotenv').config();j
 
 // Normal Routes
 router.route('/').get(async (req, res) => {
-    await stripe.products.list({ limit: 10 })
-        .then(products => {
-            console.log(products);
-            res.json(products);
+    const prices = await stripe.prices.list()
+
+    // Connect price object to product object
+    // const new_prices = await Promise.all(prices.data.map(async price => {
+    //     const product_object = await stripe.products.retrieve(price.product);
+    //     price.product_object = product_object;
+    //     return price;
+    // }))
+
+    const products = await Promise.all(
+        prices.data.map(async (price) => {
+            const product = await stripe.products.retrieve(price.product)
+            product.price = price
+            return product
         })
-        .catch(err => res.status(400).json('Error: ' + err)); 
-});
+    )
 
-router.route('/:id').get(async (req, res) => {
-    await stripe.products.retrieve(req.params.id)
-        .then(product => res.json(product))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
+    res.json(products)
+})
 
-router.route('/price/:id').get(async (req, res) => {
-    await stripe.prices.list({ product: req.params.id })
-        .then(price => res.json(price))
-        .catch(err => res.status(400).json('Error: ' + err)); 
-});
+// router.route('/:id').get(async (req, res) => {
+//     await stripe.products.retrieve(req.params.id)
+//         .then(product => res.json(product))
+//         .catch(err => res.status(400).json('Error: ' + err));
+// });
 
+// router.route('/price/:id').get(async (req, res) => {
+//     await stripe.prices.list({ product: req.params.id })
+//         .then(price => res.json(price))
+//         .catch(err => res.status(400).json('Error: ' + err));
+// });
 
-/*
-router.route('/category/:category').get((req, res) => {
-    Product.find({ category : req.params.category })
-        .then(products => res.json(products))
-        .catch(err => res.status(400).json('Error: ' + err)); 
-});
-
-
-// Protected Routes 
+/*// Protected Routes
 router.route('/').post(checkAdmin, (req, res, next) => {
     const name = req.body.name;
     const synopsis = req.body.synopsis;
@@ -85,33 +89,4 @@ router.route('/:id').delete(checkAdmin, (req, res, next) => {
 });
 */
 
-module.exports = router;
-
-/*
-router.route('/cart').get(async (req, res) => {
-    const productList = req.query.products;
-
-    // Attempt 1, also only gets one for each
-    Product.find({'_id': { $in: productList }})
-        .then(products => res.json(products))
-        .catch(err => res.status(400).json('Error: ' + err));
-
-    // Attempt 2
-    let productID;
-    let pendingProducts = productList.map(productID => {
-        return Product.findById(productID)
-            .then(product => {
-                console.log(product);
-                return product;
-            })
-            .catch(err => console.log(err));
-    })
-
-    await Promise.all(pendingProducts).then(fetchedProducts => {
-        res.json(fetchedProducts);
-        console.log('fetched products', fetchedProducts);
-    })
-    
-});*/
-
-// Boards (boards), INS Systems (ins), Survey Systems (survey)
+module.exports = router
